@@ -1,0 +1,24 @@
+# Never commit local credentials
+.env
+.env.*
+!.env.example
+.codex/
+.agents/
+.aws/
+
+# Python and local development
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Java build artifacts, generated proxies and temp files
+java-pex/target/
+java-pex/build/
+*.class
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+dist/
