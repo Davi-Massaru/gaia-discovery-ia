@@ -12,6 +12,31 @@ __pycache__/
 .pytest_cache/
 .venv/
 venv/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+
+# Node dependencies and generated caches
+node_modules/
+.npm/
+.pnpm-store/
+.yarn/cache/
+.yarn/unplugged/
+.yarn/install-state.gz
+.pnp.*
+.cache/
+.parcel-cache/
+.vite/
+.turbo/
+.next/
+.nuxt/
+.svelte-kit/
+coverage/
+*.tsbuildinfo
 
 # Java build artifacts, generated proxies and temp files
 java-pex/target/
