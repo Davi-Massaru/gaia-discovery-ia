@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Gaia Discovery AI Hub Decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["hypothesis", "alternative", "next_action", "question", "reason", "assessment"],
+  "properties": {
+    "hypothesis": {"type": "string", "minLength": 1, "maxLength": 300},
+    "alternative": {"type": ["string", "null"], "maxLength": 300},
+    "next_action": {
+      "type": "string",
+      "enum": ["CHECK_GAIA", "CHECK_SIMBAD", "CHECK_IRSA", "FINISH"]
+    },
+    "question": {"type": "string", "maxLength": 300},
+    "reason": {"type": "string", "minLength": 1, "maxLength": 700},
+    "assessment": {
+      "type": ["string", "null"],
+      "enum": ["CATALOG_CONTEXT_FOUND", "REVIEW_CANDIDATE", "INCONCLUSIVE", null]
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"next_action": {"const": "FINISH"}}, "required": ["next_action"]},
+      "then": {
+        "properties": {"assessment": {"type": "string"}, "question": {"maxLength": 0}}
+      },
+      "else": {
+        "properties": {"assessment": {"type": "null"}, "question": {"minLength": 1}}
+      }
+    }
+  ]
+}

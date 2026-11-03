@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25"><Document name="gaia-discovery-ai.ZPM"><Module>
+  <Name>gaia-discovery-ai</Name><Version>1.0.0-beta.1</Version>
+  <Description>Rubin/Fink astronomical investigations with native IRIS AI Hub, BPL and Workflow.</Description>
+  <Packaging>module</Packaging><SourcesRoot>src/iris</SourcesRoot>
+  <SystemRequirements Version=">=2026.3" Interoperability="enabled"/>
+  <Resource Name="Gaia.PKG"/>
+  <Invoke Class="EnsLib.PEX.Utils" Method="RegisterComponent" Phase="Compile" When="Before" CheckStatus="true">
+    <Arg>com.gaia.discovery.pex.TapOutboundAdapter</Arg><Arg>%Java Server</Arg>
+    <Arg>${root}/java-pex/build/gaia-tap-pex.jar|/usr/irissys/dev/java/lib/1.8/intersystems-pex-1.0.0-shaded.jar</Arg>
+    <Arg>1</Arg><Arg>Gaia.Interop.Adapters.TAPOutboundAdapter</Arg>
+  </Invoke>
+  <FileCopy Name="backend/" Target="${mgrDir}gaia/backend/"/>
+  <FileCopy Name="web/" Target="${mgrDir}gaia/web/"/>
+  <FileCopy Name="docs/contracts/" Target="${mgrDir}gaia/docs/contracts/"/>
+  <FileCopy Name="java-pex/build/gaia-tap-pex.jar" Target="${mgrDir}gaia/java-pex/build/gaia-tap-pex.jar"/>
+  <Invoke Class="Gaia.Interop.DiscoveryService" Method="Configure" Phase="Activate" When="After" CheckStatus="true"><Arg>${mgrDir}gaia</Arg></Invoke>
+  <AfterInstallMessage>IRIS AI Hub EAP 154 is required. Assign GaiaWSGI, %DB_USER and %EnsRole_Operator to authorized application users; reviewers also need GaiaWorkflowUser. Change initial IRIS passwords. Open /gaia/ through native WSGI and /csp/user/_DeepSee.UserPortal.Workflow.zen for native Inbox (USER namespace). Publication is performed manually.</AfterInstallMessage>
+</Module></Document></Export>

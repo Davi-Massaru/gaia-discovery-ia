@@ -1,0 +1,14 @@
+zn "USER"
+set active=##class(Ens.Director).GetActiveProductionName()
+if (active'="")&&(active'="Gaia.Production") { write "GAIA_INSTALL_BLOCKED: another Production is active",! halt }
+if ##class(Ens.Director).IsProductionRunning() { do ##class(Ens.Director).StopProduction(10,1) }
+set sc=##class(EnsLib.PEX.Utils).RegisterComponent("com.gaia.discovery.pex.TapOutboundAdapter","%Java Server","/opt/gaia/java-pex/build/gaia-tap-pex.jar|/usr/irissys/dev/java/lib/1.8/intersystems-pex-1.0.0-shaded.jar",1,"Gaia.Interop.Adapters.TAPOutboundAdapter")
+if $system.Status.IsError(sc) { do $system.Status.DisplayError(sc) halt }
+set sc=$system.OBJ.LoadDir("/opt/gaia/src/iris","ck",,1)
+if $system.Status.IsError(sc) { do $system.Status.DisplayError(sc) halt }
+set sc=##class(Gaia.Interop.DiscoveryService).Configure()
+if $system.Status.IsError(sc) { do $system.Status.DisplayError(sc) halt }
+set sc=##class(Ens.Director).StartProduction("Gaia.Production")
+if $system.Status.IsError(sc) { do $system.Status.DisplayError(sc) halt }
+write "GAIA_INSTALL_OK",!
+halt

@@ -1,0 +1,13 @@
+set sc=##class(Ens.Director).CreateBusinessService("DiscoveryService",.service)
+if $system.Status.IsError(sc) { do $system.Status.DisplayError(sc) halt }
+set payload={"current":{"observation":{"raDeg":34.8900102405,"decDeg":-6.0029708111},"actionsDone":[],"catalogs":{},"next_action":"CHECK_GAIA"}}
+set req=##class(Gaia.Interop.Messages.DiscoveryRequest).%New()
+set req.Kind="CATALOG_QUERY",req.RunId="TAP_VALIDATION",req.CorrelationId="TAP_VALIDATION_GAIA",req.PayloadJSON=payload.%ToJSON()
+set sc=service.SendRequestSync("GaiaOperation",req,.response,65)
+if $system.Status.IsError(sc) { do $system.Status.DisplayError(sc) } else { write "TAP_OPERATION_RESULT ",response.PayloadJSON,! }
+do payload.current.%Set("next_action","CHECK_SIMBAD")
+set req=##class(Gaia.Interop.Messages.DiscoveryRequest).%New()
+set req.Kind="CATALOG_QUERY",req.RunId="TAP_VALIDATION",req.CorrelationId="TAP_VALIDATION_SIMBAD",req.PayloadJSON=payload.%ToJSON()
+set sc=service.SendRequestSync("SimbadOperation",req,.response,65)
+if $system.Status.IsError(sc) { do $system.Status.DisplayError(sc) } else { write "TAP_OPERATION_RESULT ",response.PayloadJSON,! }
+halt

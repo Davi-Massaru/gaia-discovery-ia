@@ -1,0 +1,166 @@
+{
+  "status": "DOCUMENTED_REQUEST_SHAPES_NOT_LIVE_VALIDATED",
+  "public_query_authentication": "none",
+  "sources": [
+    {
+      "name": "Fink/Rubin LSST",
+      "base": "https://api.lsst.fink-portal.org",
+      "documentation": "https://doc.lsst.fink-broker.org/services/api/tagsearch/",
+      "endpoints": [
+        {
+          "method": "GET",
+          "path": "/api/v1/tags",
+          "request": {},
+          "response_keys": [
+            "tag list with API support"
+          ],
+          "use": "discover tags"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/schema",
+          "contentType": "application/json",
+          "request": {
+            "endpoint": "/api/v1/sources"
+          },
+          "response_keys": [
+            "field descriptors"
+          ],
+          "use": "contract test"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/tags",
+          "contentType": "application/json",
+          "request": {
+            "tag": "in_tns",
+            "n": "3",
+            "columns": "r:diaObjectId"
+          },
+          "response_keys": [
+            "r:diaObjectId"
+          ],
+          "use": "select alerts"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/sources",
+          "contentType": "application/json",
+          "request": {
+            "diaObjectId": "<from tags>",
+            "columns": "r:diaSourceId,r:ra,r:dec,r:midpointMjdTai,r:psfFlux,r:psfFluxErr",
+            "output-format": "json"
+          },
+          "response_keys": [
+            "r:diaSourceId",
+            "r:ra",
+            "r:dec",
+            "r:midpointMjdTai",
+            "r:psfFlux",
+            "r:psfFluxErr"
+          ],
+          "use": "detection metadata"
+        },
+        {
+          "method": "POST",
+          "path": "/api/v1/cutouts",
+          "contentType": "application/json",
+          "request": {
+            "diaSourceId": "<from sources>",
+            "kind": "Science"
+          },
+          "response_keys": [
+            "PNG binary"
+          ],
+          "use": "repeat for Science,Template,Difference"
+        }
+      ]
+    },
+    {
+      "name": "ESA Gaia DR3",
+      "base": "https://gea.esac.esa.int",
+      "documentation": "https://www.cosmos.esa.int/web/gaia-users/archive/programmatic-access",
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/tap-server/tap/sync",
+          "contentType": "application/x-www-form-urlencoded",
+          "request": {
+            "REQUEST": "doQuery",
+            "LANG": "ADQL",
+            "FORMAT": "csv",
+            "QUERY": "<bounded SELECT TOP 20 from gaiadr3.gaia_source>"
+          },
+          "response_keys": [
+            "source_id",
+            "ra",
+            "dec",
+            "pmra",
+            "pmdec",
+            "parallax",
+            "phot_g_mean_mag",
+            "ruwe"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "CDS SIMBAD",
+      "base": "https://simbad.cds.unistra.fr",
+      "documentation": "https://simbad.cds.unistra.fr/Pages/guide/ch02.htx",
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/simbad/sim-tap/sync",
+          "contentType": "application/x-www-form-urlencoded",
+          "request": {
+            "REQUEST": "doQuery",
+            "LANG": "ADQL",
+            "FORMAT": "csv",
+            "QUERY": "<bounded SELECT TOP 20 from basic>"
+          },
+          "response_keys": [
+            "main_id",
+            "ra",
+            "dec",
+            "otype"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "NASA IRSA / AllWISE",
+      "base": "https://irsa.ipac.caltech.edu",
+      "documentation": "https://irsawebops2.ipac.caltech.edu/docs/program_interface/astropy_TAP.html",
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/TAP/sync",
+          "contentType": "application/x-www-form-urlencoded",
+          "request": {
+            "REQUEST": "doQuery",
+            "LANG": "ADQL",
+            "FORMAT": "csv",
+            "QUERY": "<bounded SELECT TOP 20 from allwise_p3as_psd>"
+          },
+          "response_keys": [
+            "designation",
+            "ra",
+            "dec",
+            "w1mpro",
+            "w2mpro",
+            "ph_qual"
+          ]
+        }
+      ]
+    }
+  ],
+  "separately_authenticated": {
+    "name": "OpenAI embeddings",
+    "url": "https://api.openai.com/v1/embeddings",
+    "method": "POST",
+    "header": "Authorization: Bearer ${OPENAI_API_KEY}",
+    "model": "text-embedding-3-small",
+    "response": "data[0].embedding (1536 floats)"
+  }
+}

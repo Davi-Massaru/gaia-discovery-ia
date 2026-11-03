@@ -1,0 +1,22 @@
+services:
+  iris:
+    hostname: gaia-iris
+    build:
+      context: .
+      args:
+        IRIS_IMAGE: ${IRIS_IMAGE:?Set the authorized local IRIS AI Hub EAP image in .env}
+    image: gaia-discovery-ai:local
+    init: true
+    env_file: .env
+    ports:
+      - "127.0.0.1:${GAIA_WEB_PORT:-52774}:52773"
+      - "127.0.0.1:${GAIA_SQL_PORT:-1973}:1972"
+    volumes:
+      - iris-data:/durable
+    environment:
+      ISC_DATA_DIRECTORY: /durable/irissys
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4.1-mini}
+      GAIA_REVIEWER: ${GAIA_REVIEWER:-_SYSTEM}
+    restart: unless-stopped
+volumes:
+  iris-data:

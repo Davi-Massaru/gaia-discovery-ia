@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0B1020">
+  <title>Gaia Discovery AI · Astronomical Investigation</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <script id="supported-tags" type="application/json">__SUPPORTED_TAGS__</script>
+  <script defer src="assets/app.js"></script>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="#feed" aria-label="Gaia Discovery AI home">
+    <svg width="42" height="42" viewBox="0 0 42 42" aria-hidden="true"><circle cx="21" cy="21" r="17"/><circle cx="21" cy="21" r="10"/><circle class="point" cx="32" cy="8" r="4"/><path d="M21 2v8M21 32v8M2 21h8M32 21h8"/></svg>
+    <span>GAIA DISCOVERY AI<small>Astronomical Investigation</small></span></a>
+    <div class="connection" id="connection">Connecting to IRIS</div>
+  </header>
+  <main>
+    <div id="notice" role="status" aria-live="polite" hidden></div>
+    <section id="feed">
+      <div class="page-heading"><div><p class="eyebrow">RUBIN OBSERVATORY · FINK BROKER</p><h1>Discovery Feed</h1><p class="muted">Recent observations. Traceable evidence. Preliminary investigations.</p></div><button id="refresh" class="quiet">↻ Refresh</button></div>
+      <form id="run-form" class="controls">
+        <label>Fink alert tag<select name="tag" id="tag" required></select></label>
+        <label>Alerts<select name="count"><option>1</option><option selected>5</option><option>10</option><option>20</option></select></label>
+        <button type="submit" id="fetch">Fetch Latest <span aria-hidden="true">↗</span></button>
+        <p>Sequential investigation<br><span class="muted">Up to 3 catalog checks per alert</span></p>
+      </form>
+      <div id="run-status" class="run-status" role="status" hidden></div>
+      <div class="list-heading"><h2>Previous investigations</h2><form id="search-form"><label class="sr-only" for="search">Search saved reports by semantic similarity</label><input id="search" placeholder="Search saved reports…" maxlength="2000"><button class="quiet">Search</button></form></div>
+      <div class="report-filters"><label>Report status<select id="status-filter"><option value="">All statuses</option><option>REVIEW_CANDIDATE</option><option>CATALOG_CONTEXT_FOUND</option><option>INCONCLUSIVE</option></select></label><label>Review status<select id="review-filter"><option value="">All review statuses</option><option>PENDING</option><option>ACCEPTED_FOR_REVIEW</option><option>REJECTED</option><option>NOT_REQUIRED</option><option>TASK_ERROR</option></select></label></div>
+      <p class="review-note" id="semantic-note" hidden>Semantic search excludes INCONCLUSIVE reports.</p>
+      <div id="reports" aria-live="polite"><p class="empty">Loading saved reports…</p></div>
+      <nav class="pagination" aria-label="Report pages"><button id="previous" class="quiet" disabled>← Previous</button><span id="page-number">1</span><button id="next" class="quiet">Next →</button></nav>
+      <p class="footnote">A preliminary candidate is not a confirmed discovery. Catalog proximity does not establish identity.</p>
+    </section>
+    <section id="report" hidden></section>
+  </main>
+  <footer>IRIS Interoperability <span>·</span> Native AI Hub <span>·</span> Scientific evidence, preserved</footer>
+</body>
+</html>
