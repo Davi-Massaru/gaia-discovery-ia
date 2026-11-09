@@ -483,8 +483,6 @@ do ##class(%SYS.Python).Run("import runpy; runpy.run_path('/opt/gaia/tests/nativ
 
 Expected markers: ISOLATED_FIXTURE_PRODUCTION_READY, BPL_NATIVE_REVIEW_REPLIES_OK, ISOLATED_E2E_RESULT PASS, AGENT_MIGRATION_REGRESSION_OK and AGENT_ENVIRONMENT_COMPATIBILITY_OK. Scenarios cover immediate FINISH, all catalogs, invalid decisions, missing cutouts, catalog failure, empty batches, two correlated reviews and review dispatch failure.
 
-Retained JSON under docs/evidence preserves previous real-run and Inbox evidence without relying on ignored dist files. Earlier development checks also recorded transient catalog failures and an EAP System monitor error (`<METHOD DOES NOT EXIST>Sharding+2^STU *Sharding,SYS.ICM`). Diagnose current startup with logs and GAIA_INSTALL_OK; the standard healthcheck remains enabled.
-
 ## License and attribution
 
 No repository license file is present; this README grants no additional rights to source or dependencies. IRIS AI Hub EAP usage follows its authorized distribution terms; do not redistribute its image or credentials.
