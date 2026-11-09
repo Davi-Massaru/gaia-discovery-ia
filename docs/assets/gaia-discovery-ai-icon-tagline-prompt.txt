@@ -1,0 +1,3 @@
+Edited with the built-in image_gen tool.
+
+Edit the provided Gaia Discovery AI icon. Preserve the existing star, orbital arcs, three nodes, navy background, cyan and periwinkle palette and square 1:1 format. Add the exact tagline "iscovering new stars with IRIS" centered below the symbol in the empty lower area. Spell it exactly as supplied, beginning with lowercase i, no leading D, no parentheses. Use clean highly legible modern sans-serif typography in white, on one line, with balanced margins and enough space below the symbol. Change only the addition of the tagline; keep the original illustration intact. No other text.

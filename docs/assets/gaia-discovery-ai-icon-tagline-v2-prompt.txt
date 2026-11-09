@@ -1,0 +1,3 @@
+Edited with the built-in image_gen tool.
+
+Edit this icon with one precise text correction. Replace the bottom tagline "iscovering new stars with IRIS" with the exact text "Discovering new stars with IRIS". Add the missing capital D so the first word is spelled D-i-s-c-o-v-e-r-i-n-g. Keep the tagline centered on one line, in the same white clean sans-serif type, adjusting font size slightly only if needed for balanced left and right margins. Preserve the star, all orbital arcs and nodes, their positions, colors and glow, the navy background and square canvas. No other changes or added text.
