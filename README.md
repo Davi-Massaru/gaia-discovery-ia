@@ -2,6 +2,8 @@
 
 **Traceable preliminary investigations of Rubin/Fink astronomical alerts inside InterSystems IRIS.**
 
+[Quick Start](#quick-start) · [Demonstrations](#guided-demonstrations) · [Architecture](#system-architecture) · [Workflows](#interoperability-workflows) · [Verification](#tests-and-verification)
+
 ## From an alert to an investigation
 
 Time-domain astronomy studies how the sky changes between observations. An alert is a detection that merits investigation; interpreting it requires measurements, images and astronomical context. An alert broker connects survey alerts with scientists: [Fink](https://doc.lsst.fink-broker.org/) stores alerts, enriches them with catalog information and classifications, and distributes selected events for analysis and follow-up.
@@ -120,6 +122,15 @@ Semantic search and optional history lookup use provider embeddings when eligibl
 
 ## System architecture
 
+![Gaia Discovery AI architecture with system logos and telescope, satellite, database, agent and reviewer icons](docs/diagrams/system-architecture.png)
+
+*The blue boundary is the native IRIS runtime. Fink supplies Rubin observations and cutouts; ESA Gaia, CDS SIMBAD and IRSA AllWISE supply catalog context. OpenAI provides chat and eligible history embeddings. Solid arrows show calls/data flow; dashed arrows identify conditional review or optional embeddings. This is an architecture illustration, not an execution trace.*
+
+The telescope represents observation data, the satellite represents Gaia's mission context, the database cylinders represent persisted/catalog data, and the person represents the human reviewer. The logos identify providers; they do not imply sponsorship. See [SVG source](docs/diagrams/system-architecture.svg), [asset attribution and reproduction](docs/diagrams/SOURCES.md).
+
+<details>
+<summary>Mermaid architecture — editable diagram</summary>
+
 ```mermaid
 flowchart LR
     Browser["Browser: feed and report"] --> WSGI["IRIS native WSGI /gaia: Flask"]
@@ -141,6 +152,8 @@ flowchart LR
     Inbox["Native User Portal Inbox"] --> Review
     Review --> BPL
 ```
+
+</details>
 
 Flask runs inside IRIS through `%SYS.Python.WSGI`; no separate Flask server is used. ObjectScript owns Production, service/message boundaries, BPL and agent integration. Embedded Python handles science normalization, state, SQL and embeddings. Java PEX handles transport; Python constructs/interprets scientific queries. Generated proxy `Gaia.Interop.Adapters.TAPOutboundAdapter` is registered against the shipped `%Java Server`.
 
@@ -179,6 +192,13 @@ Ingestion and investigation are consecutive phases of one executable BPL. Review
 
 `DiscoveryRequest` and `DiscoveryResponse` carry RunId, Kind, CorrelationId, PayloadJSON; responses add status/error fields. START_RUN contains `{runId,tag,count}`. BPL sends LIST_BY_TAG, then GET_SOURCES per unique object. GET_SOURCES selects the detection with largest `midpointMjdTai`, validates measurements/coordinates, fetches three PNGs and attempts optional history lookup. Image stream references stay out of the agent prompt.
 
+![Batch ingestion sequence from Flask through DiscoveryService and BPL to Fink](docs/diagrams/batch-ingestion-mermaid.png)
+
+*Diagram of implemented calls. The HTTP response acknowledges dispatch while BPL continues with Fink evidence retrieval.*
+
+<details>
+<summary>Mermaid ingestion sequence — editable diagram</summary>
+
 ```mermaid
 sequenceDiagram
     participant HTTP as Flask /gaia
@@ -188,17 +208,19 @@ sequenceDiagram
     participant API as Fink REST API
     HTTP->>S: StartRun(tag, count)
     S->>B: START_RUN (async)
-    S-->>HTTP: runId; handler returns HTTP 202
+    S-->>HTTP: runId, handler returns HTTP 202
     B->>F: LIST_BY_TAG
-    F->>API: GET tags; POST tag selection
+    F->>API: GET tags, then POST tag selection
     F-->>B: Unique object IDs or failure state
     loop Each selected object, sequentially
         B->>F: GET_SOURCES
-        F->>API: POST sources; POST three cutouts
+        F->>API: POST sources, then POST three cutouts
         F-->>B: Validated observation and saved image references
         Note over B: Continue adaptive investigation
     end
 ```
+
+</details>
 
 **Branches/results:** empty selection yields NO_ALERTS; listing failure marks the run FAILED. Missing/invalid detections or required cutouts finish the object as INCONCLUSIVE. Optional history failure is recorded without discarding valid source evidence. Available evidence is preserved.
 
@@ -216,16 +238,23 @@ sequenceDiagram
 4. BPL executes the selected catalog Operation and asks again with updated evidence. Catalogs cannot repeat; FINISH may occur immediately. The maximum valid investigation has three checks and four decisions.
 5. FINISH saves the report. If a requested catalog failed, Python overrides the proposed assessment to INCONCLUSIVE, retaining the proposal in decision history. Provider failure/invalid output also finishes inconclusively.
 
+![Adaptive investigation sequence showing validated agent decisions and selected catalog execution](docs/diagrams/adaptive-investigation-mermaid.png)
+
+*The BPL controls catalog execution. Each agent reply is validated before the selected Operation runs.*
+
+<details>
+<summary>Mermaid investigation sequence — editable diagram</summary>
+
 ```mermaid
 sequenceDiagram
     participant B as DiscoveryWorkflow
     participant A as AIHubOperation
-    participant Agent as Gaia.AI.DiscoveryAgent
-    participant O as GaiaOperation / SimbadOperation / IrsaOperation
-    participant J as Java TAPOutboundAdapter
+    participant Agent as Gaia.AI.<br/>DiscoveryAgent
+    participant O as GaiaOperation<br/>SimbadOperation<br/>IrsaOperation
+    participant J as Java PEX<br/>TAPOutboundAdapter
     loop Until FINISH, bounded decisions
         B->>A: AGENT_DECIDE with accumulated evidence
-        A->>Agent: CreateSession; Chat(structured prompt)
+        A->>Agent: CreateSession and Chat(structured prompt)
         Agent-->>A: JSON hypothesis and next_action
         Note over A: Validate schema, distinct actions and budget
         A-->>B: Updated state
@@ -235,10 +264,12 @@ sequenceDiagram
             J-->>O: CSV and transport metadata, or error
             O-->>B: Normalized OK / EMPTY / ERROR evidence
         else FINISH or recorded decision failure
-            Note over B: Exit loop; save report and session ID
+            Note over B: Exit loop, save report and session ID
         end
     end
 ```
+
+</details>
 
 There are **no configured ToolSets or agent tool calls**. `MaxIterations=1` applies per invocation; BPL owns the multi-decision loop and catalog execution. Human approval applies to the final candidate, not individual queries.
 
@@ -275,6 +306,13 @@ The original PNGs are retained with the record, using the filenames and SHA-256 
 
 Each saved REVIEW_CANDIDATE creates an async `EnsLib.Workflow.TaskRequest` for AstronomyReviewer, subject `Gaia report <id>`, report link and actions ACCEPT/REJECT. Dynamic call name `Review_<id>` correlates each task. After all objects, ScientificCompletion updates the run before WaitNativeReviews synchronizes all replies. Review reads native `%Subject`/`%Action`, then updates the original report through Python.
 
+![Native human review sequence showing asynchronous task dispatch, ACCEPT and REJECT branches](docs/diagrams/human-review-mermaid.png)
+
+*Scientific completion can precede the human response. Both reply branches update the original persisted report.*
+
+<details>
+<summary>Mermaid human review sequence — editable diagram</summary>
+
 ```mermaid
 sequenceDiagram
     participant B as DiscoveryWorkflow
@@ -283,8 +321,8 @@ sequenceDiagram
     participant H as Native Inbox reviewer
     B->>DB: Save REVIEW_CANDIDATE, PENDING
     B->>W: TaskRequest, async Review_reportId
-    W->>H: Gaia report id; ACCEPT / REJECT
-    Note over B: Process remaining objects; mark scientific run complete
+    W->>H: Gaia report id, ACCEPT / REJECT
+    Note over B: Process remaining objects, mark scientific run complete
     B->>B: WaitNativeReviews: sync outstanding calls
     H->>W: Complete task with selected action
     W-->>B: TaskResponse with subject and action
@@ -294,6 +332,8 @@ sequenceDiagram
         B->>DB: REJECTED
     end
 ```
+
+</details>
 
 Other assessments receive NOT_REQUIRED and bypass review. Dispatch failure sets TASK_ERROR. A terminating BPL records failure for outstanding pending reports.
 
@@ -313,7 +353,7 @@ Other assessments receive NOT_REQUIRED and bypass review. Dispatch failure sets 
 4. Compare RunId, CorrelationId, Kind and PayloadJSON. Decision history explains routing; source status distinguishes empty from failed queries.
 5. For review, include AstronomyReviewer dispatch/response and match the task subject to the report. Scientific completion may precede the reply.
 
-Session 221 is retained development evidence, not a seeded ID on fresh installs. New runs produce new report/session IDs. Capture readable names, directions and meaningful branches, excluding credentials. During this update the available Compose portal required login and had no authenticated browser session; no existing Visual Trace image was found.
+Session 221 is retained development evidence, not a seeded ID on fresh installs. New runs produce new report/session IDs. Capture readable names, directions and meaningful branches, excluding credentials. No authenticated Visual Trace image exists in the retained assets. Docker was unavailable during the November 8 documentation revision, so fresh portal captures could not be obtained. The generated diagrams above describe execution paths and do not replace the required authentic trace captures.
 
 ## Installation and configuration
 
@@ -379,6 +419,7 @@ tests/                         Python contracts, isolated BPL and native tests
 docs/contracts/                API contracts and decision schema
 docs/specification/            Component and UI specifications
 docs/implementation/           Class contracts and validation records
+docs/diagrams/                 Branded architecture, rendered flows and asset sources
 docs/screenshots/              Authentic application captures
 docs/evidence/                 Retained real-run and isolated-review evidence
 agents/                        Repository agent instructions
@@ -400,9 +441,11 @@ python -m unittest discover -s tests -v
 python scripts/audit_package.py --workspace
 ```
 
-Unit tests mock external/IRIS boundaries to verify science bounds, schema/action budgets, routing, diagnostics, PNG integrity, REST inputs, review persistence and semantic eligibility. During this documentation update, **31 tests passed** against current source through a read-only mount in a temporary container with networking disabled. This does not assert a new live-provider run or reinstallation.
+Unit tests mock external/IRIS boundaries to verify science bounds, schema/action budgets, routing, diagnostics, PNG integrity, REST inputs, review persistence and semantic eligibility. On **November 3, 2026, 31 tests passed** through a read-only source mount in a temporary container with networking disabled. This historical result does not assert a new live-provider run or reinstallation during the November 8 documentation revision.
 
-The package audit passed for 40 required files, relative links, JSON, the API manifest, schemas and Python syntax. The six retained PNG hashes and four implementation hashes match the real-run record; its message export contains eight agent requests and six routed catalog requests.
+The November 3 package audit passed for 40 required files, relative links, JSON, the API manifest, schemas and Python syntax. The six retained PNG hashes and four implementation hashes match the real-run record; its message export contains eight agent requests and six routed catalog requests.
+
+All four README Mermaid blocks also pass the real Mermaid parser and render through the official CLI. PNG exports provide direct viewing on GitHub; expand each Mermaid diagram to inspect its editable source. [Diagram tooling and verification](docs/diagrams/SOURCES.md) describes how to regenerate and check them.
 
 The Docker image intentionally excludes tests and most validation scripts. Run checkout checks using a read-only mount after building the local image:
 
