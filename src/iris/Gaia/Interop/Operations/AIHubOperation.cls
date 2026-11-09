@@ -12,10 +12,7 @@ Method Handle(pRequest As Gaia.Interop.Messages.DiscoveryRequest, Output pRespon
     }
     Try {
         Set stage="AI_HUB_PROVIDER"
-        Set settings={"api_key":(..ApiKey())}
-        Set provider=##class(%AI.Provider).Create("openai",settings)
-        Set agent=##class(%AI.Agent).%New(provider)
-        Set agent.Model=..Model(),agent.SystemPrompt=..Prompt(),agent.MaxIterations=1
+        Set agent=..CreateAgent()
         Set session=agent.CreateSession()
         Set stage="AI_HUB_CHAT"
         Set answer=agent.Chat(session,..Context(pRequest.PayloadJSON))
@@ -27,32 +24,25 @@ Method Handle(pRequest As Gaia.Interop.Messages.DiscoveryRequest, Output pRespon
     }
     Quit 1
 }
+ClassMethod CreateAgent() As Gaia.AI.DiscoveryAgent
+{
+    Quit ##class(Gaia.AI.DiscoveryAgent).%New()
+}
+/// Compatibility entry points for existing diagnostic callers.
 ClassMethod ApiKey() As %String [ Language = python ]
 {
-    import sys, iris
-    home = iris.gref("^GaiaConfig").get(["home"]) or "/opt/gaia"
-    if home+"/backend" not in sys.path:
-        sys.path.insert(0, home+"/backend")
-    import os
-    return os.environ.get("OPENAI_API_KEY", "")
+    import iris
+    return iris.cls("Gaia.AI.DiscoveryAgent").ApiKey()
 }
 ClassMethod Model() As %String [ Language = python ]
 {
-    import sys, iris
-    home = iris.gref("^GaiaConfig").get(["home"]) or "/opt/gaia"
-    if home+"/backend" not in sys.path:
-        sys.path.insert(0, home+"/backend")
-    import os
-    return os.environ.get("OPENAI_MODEL", "gpt-4.1-mini")
+    import iris
+    return iris.cls("Gaia.AI.DiscoveryAgent").ConfiguredModel()
 }
 ClassMethod Prompt() As %String [ Language = python ]
 {
-    import sys, iris
-    home = iris.gref("^GaiaConfig").get(["home"]) or "/opt/gaia"
-    if home+"/backend" not in sys.path:
-        sys.path.insert(0, home+"/backend")
-    from gaia.runtime import SYSTEM_PROMPT
-    return SYSTEM_PROMPT
+    import iris
+    return iris.cls("Gaia.AI.DiscoveryAgent").Instructions()
 }
 ClassMethod Context(state As %String) As %String [ Language = python ]
 {

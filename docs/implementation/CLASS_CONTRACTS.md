@@ -47,7 +47,14 @@ Authoritative canonical JSON structure: [INTERNAL_MESSAGES.md](../contracts/INTE
 
 - `decide(evidence, actionsDone, remainingBudget) -> validated decision JSON`.
 - Build bounded prompt context in Embedded Python, call one **native** `%AI.Agent` using installed SDK binding, validate exact JSON fields/enumerations against the [decision schema](../contracts/AI_HUB_DECISION.schema.json).
-- The native `%AI.Agent` is configured through the SDK, not an assumed custom `Gaia.AI.DiscoveryAgent.cls` wrapper. Record AI decisions and explanations in EvidenceJSON.
+- Compose `Gaia.AI.DiscoveryAgent` through `CreateAgent()`; this Operation remains an `Ens.BusinessOperation`. Record AI decisions and explanations in EvidenceJSON. Existing `ApiKey()`, `Model()` and `Prompt()` entry points delegate to the agent for diagnostic compatibility.
+
+`Gaia.AI.DiscoveryAgent extends %AI.Agent`:
+
+- Preserve the native programmatic `%OnNew(provider)` lifecycle: construct the OpenAI provider when none is supplied, invoke inherited initialization and apply the existing model, system prompt and `MaxIterations=1`.
+- Resolve `OPENAI_API_KEY` and `OPENAI_MODEL` at instantiation; default model remains `gpt-4.1-mini`. `Instructions()` reads the unchanged Python `SYSTEM_PROMPT`.
+- Inherit `CreateSession()` and `Chat()` unchanged. Every decision uses a new agent/session and reconstructs evidence through the existing Python context builder. No ToolSets or policies are registered by this extraction.
+- Preserve provider/chat failure-stage attribution in the Operation. See [migration model and validation](DISCOVERY_AGENT_MIGRATION.md).
 
 ## 4. Catalog Operations with one Java PEX TAP transport
 

@@ -1,0 +1,445 @@
+{
+  "timestamp": "2026-11-03T11:34:42.076750+00:00",
+  "localTime": "2026-11-03T08:34:42.076768-03:00",
+  "scope": "REAL_HTTP_PRODUCTION_BPL_AGENT_CATALOGS_PERSISTENCE",
+  "mocks": false,
+  "runId": "62c736ab-9e6e-4724-8bb0-702ff793b0d9",
+  "runtime": "IRIS for UNIX (Ubuntu Server LTS for x86-64 Containers) 2026.3.0AI (Build 154U) Thu Sep 24 2026 10:04:49 EDT",
+  "production": {
+    "DiscoveryService": "Gaia.Interop.DiscoveryService",
+    "DiscoveryWorkflow": "Gaia.Interop.DiscoveryWorkflow",
+    "FinkOperation": "Gaia.Interop.Operations.FinkOperation",
+    "AIHubOperation": "Gaia.Interop.Operations.AIHubOperation",
+    "GaiaOperation": "Gaia.Interop.Operations.GaiaOperation",
+    "SimbadOperation": "Gaia.Interop.Operations.SimbadOperation",
+    "IrsaOperation": "Gaia.Interop.Operations.IrsaOperation",
+    "AstronomyReviewer": "EnsLib.Workflow.Operation"
+  },
+  "agent": {
+    "class": "Gaia.AI.DiscoveryAgent",
+    "provider": "openai",
+    "model": "gpt-4.1-mini",
+    "maxIterations": 1,
+    "promptSHA256": "afbea033e96144a801d66691d4b3b1119c2ac3c6070aef0762459a3ce98aadfc"
+  },
+  "sourceSHA256": {
+    "src/iris/Gaia/AI/DiscoveryAgent.cls": "905611761cd46479c0aeacc4e257048d16fb2e731468cc771220b24e7e29e1a2",
+    "src/iris/Gaia/Interop/Operations/AIHubOperation.cls": "68f9d9f9643da4adcc13c993b0ac511c26dee15d81341d423ded57ca39800044",
+    "backend/gaia/runtime.py": "63b7005d4943acb45ff469470fed1a0a4c2a512912479837de7247e4a7096764",
+    "backend/gaia/embedding.py": "6412121c628110c12377d836ea609085634aa0c80b9f644cde314c9e6b8c4dae"
+  },
+  "validationStatus": "PASS",
+  "httpChecks": {
+    "asyncAcceptance": {
+      "httpStatus": 202,
+      "seconds": 0.134
+    },
+    "/api/discoveries?limit=1&offset=0": 200,
+    "/api/discoveries/999999": 404,
+    "/api/discoveries?limit=0": 400,
+    "/api/discoveries/runs/unknown": 404,
+    "/api/discoveries/1/images/nope": 404,
+    "/": 200,
+    "/assets/app.js": 200,
+    "realSemanticSearchHTTP": 200
+  },
+  "directPEXDiagnostics": {
+    "GAIA": {
+      "status": "EMPTY",
+      "httpStatus": 200,
+      "rows": 0,
+      "error": null,
+      "errorType": null,
+      "elapsedMs": 6701
+    },
+    "SIMBAD": {
+      "status": "EMPTY",
+      "httpStatus": 200,
+      "rows": 0,
+      "error": null,
+      "errorType": null,
+      "elapsedMs": 5817
+    },
+    "IRSA": {
+      "status": "OK",
+      "httpStatus": 200,
+      "rows": 1,
+      "error": null,
+      "errorType": null,
+      "elapsedMs": 22259
+    }
+  },
+  "run": {
+    "runId": "62c736ab-9e6e-4724-8bb0-702ff793b0d9",
+    "tag": "extragalactic_new_candidate",
+    "count": 2,
+    "status": "COMPLETED",
+    "completed": 2,
+    "reportIds": [
+      "33",
+      "34"
+    ],
+    "createdAt": "2026-11-03T11:31:16.163807+00:00",
+    "createdEpoch": 1793705476.1638236,
+    "total": 2
+  },
+  "reports": [
+    {
+      "id": "33",
+      "diaObjectId": "171141237268545549",
+      "diaSourceId": "171145626307264622",
+      "sessionId": "221",
+      "assessment": "INCONCLUSIVE",
+      "reviewStatus": "NOT_REQUIRED",
+      "executionStatus": "OK",
+      "technicalFailures": [],
+      "agentRequests": 4,
+      "agentResponses": 4,
+      "validDecisions": 4,
+      "decisions": [
+        {
+          "alternative": null,
+          "assessment": null,
+          "hypothesis": "The transient detected at RA 34.690187 deg, Dec -5.917476 deg is a potentially new or rare astronomical event with no known counterparts in existing catalogs.",
+          "next_action": "CHECK_GAIA",
+          "question": "Is there a Gaia catalog counterpart at or near RA 34.690187 deg, Dec -5.917476 deg that matches the transient's position within astrometric uncertainties?",
+          "reason": "The transient source detected is bright with significant flux, but there are no prior Gaia, SIMBAD, or IRSA catalog queries completed. Gaia provides precise optical astrometry and parallax/proper motion data. Checking Gaia first allows us to determine if the transient corresponds to any known star or object, or if it is an unknown source, crucial for classifying its nature.",
+          "timestamp": "2026-11-03T11:32:02.724754+00:00"
+        },
+        {
+          "alternative": "The transient could be an optical transient without a Gaia counterpart, such as a transient event or moving object missed by Gaia.",
+          "assessment": null,
+          "hypothesis": "The transient is not associated with any known Gaia optical source, possibly indicating it is a new or rare object.",
+          "next_action": "CHECK_SIMBAD",
+          "question": "Is there any SIMBAD object, including stars, galaxies, or other sources, within a few arcseconds of RA 34.690187 deg, Dec -5.917476 deg that could be related to the transient?",
+          "reason": "No Gaia catalog counterparts were found near the transient position, so checking SIMBAD next can reveal multi-wavelength or known object associations, including variable stars, galaxies, or previous transient detections. SIMBAD aggregates numerous object types and can provide crucial context beyond Gaia’s optical-only data, helping to refine the nature of the transient source.",
+          "timestamp": "2026-11-03T11:32:23.253872+00:00"
+        },
+        {
+          "alternative": "The transient is unrelated to the VIPERS galaxy and might be a foreground or background event, or unrelated transient source without a catalog match.",
+          "assessment": null,
+          "hypothesis": "The transient corresponds to a nearby galaxy VIPERS 105148635 at the given location, possibly related to host galaxy activity or a transient within it.",
+          "next_action": "CHECK_IRSA",
+          "question": "Is there an IRSA AllWISE infrared source or extended emission near RA 34.690187 deg, Dec -5.917476 deg that could support the presence of a host galaxy or dusty environment for the transient?",
+          "reason": "SIMBAD catalog reports a nearby galaxy (VIPERS 105148635) within 0.17 arcsec, but positional uncertainty and epoch differences prevent asserting identity. Checking IRSA AllWISE infrared data next helps confirm if there is a consistent infrared counterpart consistent with a galaxy or dusty environment, strengthening interpretation toward a host galaxy association or embedded transient.",
+          "timestamp": "2026-11-03T11:32:34.775009+00:00"
+        },
+        {
+          "alternative": "The transient is unrelated to the nearby catalog objects due to positional uncertainties and epoch differences; it might be an independent transient event with no known catalog counterparts.",
+          "assessment": "INCONCLUSIVE",
+          "hypothesis": "The transient is spatially close to the VIPERS galaxy and an IRSA infrared source, suggesting a possible association with a host galaxy or a dusty environment.",
+          "next_action": "FINISH",
+          "question": "",
+          "reason": "All three catalogs have been queried with only nearby candidate objects found: no Gaia star counterpart, a galaxy in SIMBAD within 0.17 arcsec, and an IRSA AllWISE source about 9.6 arcsec away with blending cautions. None of these prove a direct association; positional uncertainties, epoch differences, and IRSA blending limit confident identification. Without closer or time-appropriate matches, the nature of the transient remains uncertain. Further catalog queries are exhausted. Final assessment must be inconclusive due to lack of definitive counterparts or contextual evidence.",
+          "timestamp": "2026-11-03T11:33:00.319705+00:00"
+        }
+      ],
+      "catalogActions": [
+        "GAIA",
+        "SIMBAD",
+        "IRSA"
+      ],
+      "catalogs": {
+        "GAIA": {
+          "matches": [],
+          "radiusArcsec": 5,
+          "sanitized_endpoint": "https://gea.esac.esa.int/tap-server/tap/sync",
+          "sanitized_query": "SELECT TOP 20 source_id,ra,dec,parallax,pmra,pmdec,phot_g_mean_mag,ruwe FROM gaiadr3.gaia_source WHERE 1=CONTAINS(POINT('ICRS',ra,dec),CIRCLE('ICRS',34.6901868658,-5.9174762679,0.001388888889))",
+          "source": "GAIA",
+          "status": "EMPTY",
+          "timestamp": "2026-11-03T11:32:16.187632+00:00",
+          "transport": {
+            "attempts": [
+              {
+                "elapsedMs": 13422,
+                "endpoint": "https://gea.esac.esa.int/tap-server/tap/sync",
+                "httpStatus": 200,
+                "method": "GET"
+              }
+            ],
+            "elapsedMs": 13434,
+            "endpoint": "https://gea.esac.esa.int/tap-server/tap/sync",
+            "httpStatus": 200
+          }
+        },
+        "IRSA": {
+          "matches": [
+            {
+              "associationCaution": "Position-only proximity is not identity; epochs and positional uncertainties differ.",
+              "blendingCaution": "AllWISE has a broader PSF; blending and epoch differences limit association.",
+              "dec": -5.9148306,
+              "designation": "J021845.54-055453.3",
+              "id": "J021845.54-055453.3",
+              "ph_qual": "BUUU",
+              "ra": 34.6897778,
+              "separationArcsec": 9.63638414545838,
+              "w1mpro": 17.195,
+              "w2mpro": 16.969
+            }
+          ],
+          "radiusArcsec": 10,
+          "sanitized_endpoint": "https://irsa.ipac.caltech.edu/TAP/sync",
+          "sanitized_query": "SELECT TOP 20 designation,ra,dec,w1mpro,w2mpro,ph_qual FROM allwise_p3as_psd WHERE 1=CONTAINS(POINT('ICRS',ra,dec),CIRCLE('ICRS',34.6901868658,-5.9174762679,0.002777777778))",
+          "source": "IRSA",
+          "status": "OK",
+          "timestamp": "2026-11-03T11:32:57.415877+00:00",
+          "transport": {
+            "attempts": [
+              {
+                "elapsedMs": 22408,
+                "endpoint": "https://irsa.ipac.caltech.edu/TAP/sync",
+                "httpStatus": 200,
+                "method": "POST"
+              }
+            ],
+            "elapsedMs": 22413,
+            "endpoint": "https://irsa.ipac.caltech.edu/TAP/sync",
+            "httpStatus": 200
+          }
+        },
+        "SIMBAD": {
+          "matches": [
+            {
+              "associationCaution": "Position-only proximity is not identity; epochs and positional uncertainties differ.",
+              "dec": -5.917516000000001,
+              "id": "VIPERS 105148635",
+              "main_id": "VIPERS 105148635",
+              "otype": "G",
+              "ra": 34.690212700000004,
+              "separationArcsec": 0.1703432321147356
+            }
+          ],
+          "radiusArcsec": 5,
+          "sanitized_endpoint": "https://simbad.cfa.harvard.edu/simbad/sim-tap/sync",
+          "sanitized_query": "SELECT TOP 20 main_id,ra,dec,otype FROM basic WHERE 1=CONTAINS(POINT('ICRS',ra,dec),CIRCLE('ICRS',34.6901868658,-5.9174762679,0.001388888889))",
+          "source": "SIMBAD",
+          "status": "OK",
+          "timestamp": "2026-11-03T11:32:30.572887+00:00",
+          "transport": {
+            "attempts": [
+              {
+                "elapsedMs": 6263,
+                "endpoint": "https://simbad.cds.unistra.fr/simbad/sim-tap/sync",
+                "errorCode": "TAP_TIMEOUT",
+                "errorType": "SocketTimeoutException",
+                "failurePhase": "CONNECT_TLS",
+                "httpStatus": 0,
+                "method": "POST"
+              },
+              {
+                "elapsedMs": 1033,
+                "endpoint": "https://simbad.cfa.harvard.edu/simbad/sim-tap/sync",
+                "httpStatus": 200,
+                "method": "POST"
+              }
+            ],
+            "elapsedMs": 7297,
+            "endpoint": "https://simbad.cfa.harvard.edu/simbad/sim-tap/sync",
+            "httpStatus": 200
+          }
+        }
+      },
+      "images": {
+        "science": {
+          "file": "report-33-science.png",
+          "bytes": 998,
+          "byteExact": true,
+          "sha256": "ab4944d24b4b98ee423d35902be60b677437c9f7ce0a3bf9d74294056419b4d8"
+        },
+        "template": {
+          "file": "report-33-template.png",
+          "bytes": 849,
+          "byteExact": true,
+          "sha256": "65cb1039acd2d4bd387b2ff9369a2ff633084844c350a04cf710ff05fc6e485b"
+        },
+        "difference": {
+          "file": "report-33-difference.png",
+          "bytes": 998,
+          "byteExact": true,
+          "sha256": "54d10d42ba9e0caffc0fed34afc0cc01c4c6a900528ffb9a34a12d0f9c2c9a4f"
+        }
+      },
+      "historyStatus": "OK",
+      "embeddingStatus": "SKIPPED_INCONCLUSIVE",
+      "savedEmbedding": false,
+      "embeddingModel": ""
+    },
+    {
+      "id": "34",
+      "diaObjectId": "171145624633737349",
+      "diaSourceId": "171145626308837461",
+      "sessionId": "221",
+      "assessment": "INCONCLUSIVE",
+      "reviewStatus": "NOT_REQUIRED",
+      "executionStatus": "OK",
+      "technicalFailures": [],
+      "agentRequests": 4,
+      "agentResponses": 4,
+      "validDecisions": 4,
+      "decisions": [
+        {
+          "alternative": null,
+          "assessment": null,
+          "hypothesis": "The transient source is a previously uncataloged or rare astronomical object without counterparts in existing major catalogs.",
+          "next_action": "CHECK_GAIA",
+          "question": "Is there a Gaia catalog counterpart at the transient's position within positional uncertainties and accounting for proper motion?",
+          "reason": "Gaia provides precise optical astrometry and photometry. Checking Gaia first can identify whether the transient is related to a known star or stellar object, or if it lacks an optical counterpart, which may indicate a different nature (e.g., extragalactic transient or a highly variable source).",
+          "timestamp": "2026-11-03T11:33:15.546957+00:00"
+        },
+        {
+          "alternative": "The transient might be associated with a faint or embedded stellar object detectable in infrared but not in optical surveys like Gaia.",
+          "assessment": null,
+          "hypothesis": "The transient is either a previously uncataloged extragalactic event or a highly variable source without a Gaia optical counterpart at the observed epoch.",
+          "next_action": "CHECK_SIMBAD",
+          "question": "Does SIMBAD provide any object identification or historical observations near RA=34.89001, Dec=-6.00297 that could explain this transient?",
+          "reason": "Gaia data shows no counterpart, so checking SIMBAD may reveal known objects or classifications (e.g., variable stars, AGN, galaxies) at this position or close proximity. SIMBAD aggregates multi-wavelength and literature-based identifications that Gaia alone may miss. This can help narrow the nature or novelty of the transient.",
+          "timestamp": "2026-11-03T11:33:28.315468+00:00"
+        },
+        {
+          "alternative": "The transient could be a truly novel event without counterparts in major astrometric or bibliographic catalogs, requiring further data to confirm.",
+          "assessment": null,
+          "hypothesis": "The transient may be an infrared source not detected in Gaia or SIMBAD catalogs, possibly a dust-embedded star or extragalactic object.",
+          "next_action": "CHECK_IRSA",
+          "question": "Is there an infrared source counterpart near RA=34.89001, Dec=-6.00297 in the IRSA AllWISE catalog that could explain the transient's nature?",
+          "reason": "Gaia and SIMBAD catalogs yield no counterparts, limiting optical and multi-wavelength cross-identifications. Infrared surveys like AllWISE can detect sources obscured in optical bands, such as dust-embedded stars or star-forming galaxies, which may explain the transient's origin.",
+          "timestamp": "2026-11-03T11:33:37.845835+00:00"
+        },
+        {
+          "alternative": "The IRSA AllWISE source near but offset by over 9 arcsec may be unrelated due to epoch differences and blending, so the transient might still be an isolated or new source.",
+          "assessment": "INCONCLUSIVE",
+          "hypothesis": "The transient is likely unrelated to any major cataloged optical or multi-wavelength source, possibly a novel or rare transient event without clear counterparts in Gaia, SIMBAD, or IRSA.",
+          "next_action": "FINISH",
+          "question": "",
+          "reason": "Gaia and SIMBAD returned no counterparts within 5 arcseconds, and IRSA shows only a faint infrared source over 9 arcseconds away with caveats about positional uncertainties and blending, which does not robustly confirm association. Without a convincing counterpart in these major catalogs, the transient remains unidentified with current data. Further catalogs are not available for query, and existing evidence does not conclusively identify the transient's nature.",
+          "timestamp": "2026-11-03T11:33:56.138130+00:00"
+        }
+      ],
+      "catalogActions": [
+        "GAIA",
+        "SIMBAD",
+        "IRSA"
+      ],
+      "catalogs": {
+        "GAIA": {
+          "matches": [],
+          "radiusArcsec": 5,
+          "sanitized_endpoint": "https://gea.esac.esa.int/tap-server/tap/sync",
+          "sanitized_query": "SELECT TOP 20 source_id,ra,dec,parallax,pmra,pmdec,phot_g_mean_mag,ruwe FROM gaiadr3.gaia_source WHERE 1=CONTAINS(POINT('ICRS',ra,dec),CIRCLE('ICRS',34.8900102405,-6.0029708111,0.001388888889))",
+          "source": "GAIA",
+          "status": "EMPTY",
+          "timestamp": "2026-11-03T11:33:25.099199+00:00",
+          "transport": {
+            "attempts": [
+              {
+                "elapsedMs": 9549,
+                "endpoint": "https://gea.esac.esa.int/tap-server/tap/sync",
+                "httpStatus": 200,
+                "method": "GET"
+              }
+            ],
+            "elapsedMs": 9549,
+            "endpoint": "https://gea.esac.esa.int/tap-server/tap/sync",
+            "httpStatus": 200
+          }
+        },
+        "IRSA": {
+          "matches": [
+            {
+              "associationCaution": "Position-only proximity is not identity; epochs and positional uncertainties differ.",
+              "blendingCaution": "AllWISE has a broader PSF; blending and epoch differences limit association.",
+              "dec": -6.0042203,
+              "designation": "J021934.13-060015.1",
+              "id": "J021934.13-060015.1",
+              "ph_qual": "ABUU",
+              "ra": 34.8922301,
+              "separationArcsec": 9.132294300992923,
+              "w1mpro": 16.998,
+              "w2mpro": 16.805
+            }
+          ],
+          "radiusArcsec": 10,
+          "sanitized_endpoint": "https://irsa.ipac.caltech.edu/TAP/sync",
+          "sanitized_query": "SELECT TOP 20 designation,ra,dec,w1mpro,w2mpro,ph_qual FROM allwise_p3as_psd WHERE 1=CONTAINS(POINT('ICRS',ra,dec),CIRCLE('ICRS',34.8900102405,-6.0029708111,0.002777777778))",
+          "source": "IRSA",
+          "status": "OK",
+          "timestamp": "2026-11-03T11:33:53.722321+00:00",
+          "transport": {
+            "attempts": [
+              {
+                "elapsedMs": 15872,
+                "endpoint": "https://irsa.ipac.caltech.edu/TAP/sync",
+                "httpStatus": 200,
+                "method": "POST"
+              }
+            ],
+            "elapsedMs": 15873,
+            "endpoint": "https://irsa.ipac.caltech.edu/TAP/sync",
+            "httpStatus": 200
+          }
+        },
+        "SIMBAD": {
+          "matches": [],
+          "radiusArcsec": 5,
+          "sanitized_endpoint": "https://simbad.cfa.harvard.edu/simbad/sim-tap/sync",
+          "sanitized_query": "SELECT TOP 20 main_id,ra,dec,otype FROM basic WHERE 1=CONTAINS(POINT('ICRS',ra,dec),CIRCLE('ICRS',34.8900102405,-6.0029708111,0.001388888889))",
+          "source": "SIMBAD",
+          "status": "EMPTY",
+          "timestamp": "2026-11-03T11:33:34.968878+00:00",
+          "transport": {
+            "attempts": [
+              {
+                "elapsedMs": 5751,
+                "endpoint": "https://simbad.cds.unistra.fr/simbad/sim-tap/sync",
+                "errorCode": "TAP_TIMEOUT",
+                "errorType": "SocketTimeoutException",
+                "failurePhase": "CONNECT_TLS",
+                "httpStatus": 0,
+                "method": "POST"
+              },
+              {
+                "elapsedMs": 898,
+                "endpoint": "https://simbad.cfa.harvard.edu/simbad/sim-tap/sync",
+                "httpStatus": 200,
+                "method": "POST"
+              }
+            ],
+            "elapsedMs": 6650,
+            "endpoint": "https://simbad.cfa.harvard.edu/simbad/sim-tap/sync",
+            "httpStatus": 200
+          }
+        }
+      },
+      "images": {
+        "science": {
+          "file": "report-34-science.png",
+          "bytes": 985,
+          "byteExact": true,
+          "sha256": "94114e5394b3697e7e9b802c65e9fe844a4043caa8fad7a253f90b7a0021a8a7"
+        },
+        "template": {
+          "file": "report-34-template.png",
+          "bytes": 727,
+          "byteExact": true,
+          "sha256": "b04b2bf326f1e6585a0110154bf01633e6032262e7e5934686268d868bde3c17"
+        },
+        "difference": {
+          "file": "report-34-difference.png",
+          "bytes": 998,
+          "byteExact": true,
+          "sha256": "9dbf1fb003e78df8ce77a1d5d7a2c752aaab65ddfa6b30a717b24809ebdd7299"
+        }
+      },
+      "historyStatus": "OK",
+      "embeddingStatus": "SKIPPED_INCONCLUSIVE",
+      "savedEmbedding": false,
+      "embeddingModel": ""
+    }
+  ],
+  "embeddingProviderCheck": {
+    "status": "PASS",
+    "dimensions": 1536,
+    "nativeVectorSelfCosine": 1.0,
+    "scope": "INDEPENDENT_PROVIDER_CHECK_NO_REPORT_MODIFICATION"
+  },
+  "status": "PASS"
+}

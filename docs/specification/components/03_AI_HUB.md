@@ -2,7 +2,7 @@
 
 **Purpose:** form hypotheses from available evidence, ask one testable scientific question, select a permitted next investigation, revise hypotheses after each result, and end with a qualified conclusion. It does **not** execute HTTP requests, inspect undocumented images directly, or confirm a discovery.
 
-**Technology:** native `%AI.Provider` (OpenAI), one `%AI.Agent` (`GaiaDiscoveryAgent`), an isolated `%AI.Agent.Session` or a build-supported equivalent, one `AIHubOperation` invoked by BPL. Python builds/validates context; use thin ObjectScript SDK calls only where needed. Verify the actual AI Hub EAP build-154 SDK before writing method signatures.
+**Technology:** native `%AI.Provider` (OpenAI), `Gaia.AI.DiscoveryAgent Extends %AI.Agent` (prompt identity `GaiaDiscoveryAgent`), an isolated `%AI.Agent.Session` per decision, one `AIHubOperation` invoked by BPL. The agent owns the existing provider/model/instruction configuration; the Operation owns messages, session creation, invocation and failure mapping. Python builds/validates context. The extraction preserves the installed build-154 programmatic initialization; see [migration model](../../implementation/DISCOVERY_AGENT_MIGRATION.md).
 
 ## Input (bounded evidence)
 

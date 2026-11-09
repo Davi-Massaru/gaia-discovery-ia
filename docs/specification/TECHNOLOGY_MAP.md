@@ -149,4 +149,4 @@ Official sources:
 - [INTERNAL_MESSAGES.md](../contracts/INTERNAL_MESSAGES.md) gives IRIS request/response logical shapes.
 - [CROSSMATCH.md](../contracts/CROSSMATCH.md) defines what scientific information is and is not comparable.
 
-**Canonical class ownership:** [CLASS_MAP.md](../implementation/CLASS_MAP.md) and [CLASS_CONTRACTS.md](../implementation/CLASS_CONTRACTS.md). The native `%AI.Agent` is an SDK-configured agent, not an additional custom `.cls` wrapper.
+**Canonical class ownership:** [CLASS_MAP.md](../implementation/CLASS_MAP.md) and [CLASS_CONTRACTS.md](../implementation/CLASS_CONTRACTS.md). `Gaia.AI.DiscoveryAgent` extends native `%AI.Agent` and owns its existing SDK configuration; `AIHubOperation` composes it within the Production. See [migration model](../implementation/DISCOVERY_AGENT_MIGRATION.md).

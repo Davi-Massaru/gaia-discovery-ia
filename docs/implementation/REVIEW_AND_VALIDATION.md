@@ -1,5 +1,9 @@
 # Gaia Discovery AI — Review and Validation Log
 
+## 2026-11-03 — Real DiscoveryAgent interoperability validation
+
+Real authenticated HTTP → BusinessService → BPL → `AIHubOperation` → `Gaia.AI.DiscoveryAgent` completed two investigations, run `62c736ab-9e6e-4724-8bb0-702ff793b0d9`, reports 33/34, native interoperability session 221. Eight real agent requests/replies and schema-valid decisions routed six successful catalog queries, without fixtures. Both executions were technically OK and scientifically INCONCLUSIVE. Six authentic PNGs matched persisted streams byte for byte; semantic HTTP returned 200; a separate real 1536-dimensional embedding passed native vector SQL. Human review was not triggered. Evidence and limits: [real validation report](REAL_AGENT_INTEROP_VALIDATION.md).
+
 ## 2026-11-03 — Gaia/SIMBAD transport verification
 
 The user's exact cone queries were reproduced through native Java PEX. Before correction, Gaia timed out (32,985 ms) and SIMBAD timed out (15,048 ms); independent Python POST controls also failed. DNS resolved both hosts to IPv4; TCP connected to Gaia but timed out to Strasbourg. The official CfA/Harvard SIMBAD mirror accepted the same ADQL with HTTP 200 and valid zero-row CSV. Standard Gaia GET likewise returned HTTP 200. ESA's own Archive page warns about intermittent instability/timeouts during DR4 preparation.
@@ -124,3 +128,9 @@ Run `python scripts/audit_package.py`. The script checks relative Markdown links
 - Reduced target application `.cls` class count from 13 to **12**; added one Python WSGI file (`backend/app.py`). This does not remove any Interoperability, AI Hub, Vector Search, PEX or native Workflow component.
 - Required runtime test: IRIS EAP build 154 can import Flask, register the WSGI application with correct authentication/namespace, dispatch `POST /gaia/api/discoveries/run` asynchronously, serve binary PNGs and preserve UI links under the mount prefix.
 - Documentation-only correction: native WSGI is marked **experimental** in official InterSystems materials. Actual availability in contest EAP build and ZPM clean-install provisioning remain unverified.
+
+## 2026-11-03 — DiscoveryAgent extraction
+
+`Gaia.AI.DiscoveryAgent Extends %AI.Agent` now owns the existing provider/model/instruction configuration. `AIHubOperation` composes it and preserves its message, session, validation and failure contracts. Embedded Python domain/embedding implementations and existing ClassMethod entry points are preserved. See [migration model](DISCOVERY_AGENT_MIGRATION.md) and [class map](CLASS_MAP.md).
+
+Validation on IRIS 2026.3.0AI build 154U: all 14 source classes and generated BPL classes compiled; 31 Python tests passed; native regression confirmed configuration equivalence, catalog/FINISH decisions, invalid output, provider/chat failures, request discrimination and environment compatibility. Eight isolated BPL/Workflow scenarios and persisted-vector SQL passed after full source compilation. Static audit of 40 required files and `git diff --check` passed. Sources/LLM responses were simulated in the disposable integration container; no paid model calls were made. New agent and Operation were compiled in the development container; the existing Compose container was not rebuilt.

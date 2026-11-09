@@ -1,6 +1,5 @@
 """Probe the real native AI Hub and embedding provider with sanitized output."""
 import json
-import os
 import sys
 from pathlib import Path
 import iris
@@ -8,11 +7,10 @@ import iris
 sys.path.insert(0,'/opt/gaia/backend')
 from gaia.embedding import embed
 from gaia.diagnostics import diagnostic
-from gaia.runtime import SYSTEM_PROMPT, agent_prompt
+from gaia.runtime import agent_prompt
 from gaia.science import validate_decision
 from gaia import store
 results={}
-key=os.environ.get('OPENAI_API_KEY','')
 try:
     vector=embed('Gaia Discovery AI: validation of astronomical report embeddings.')
     results['embedding']={'status':'OK' if vector else 'NOT_CONFIGURED','dimensions':len(vector) if vector else 0}
@@ -21,12 +19,7 @@ except Exception as error:
     results['embedding']={'status':'ERROR','code':code,'diagnostic':details}
 stage='AI_HUB_PROVIDER'
 try:
-    settings=iris.cls('%DynamicObject')._FromJSON(json.dumps({'api_key':key}))
-    provider=iris.cls('%AI.Provider').Create('openai',settings)
-    agent=iris.cls('%AI.Agent')._New(provider)
-    agent.Model=os.environ.get('OPENAI_MODEL','gpt-4.1-mini')
-    agent.SystemPrompt=SYSTEM_PROMPT
-    agent.MaxIterations=1
+    agent=iris.cls('Gaia.AI.DiscoveryAgent')._New()
     session=agent.CreateSession()
     evidence=store.report_get('3')['evidence']
     current={name:evidence[name] for name in ('observation','catalogs')}

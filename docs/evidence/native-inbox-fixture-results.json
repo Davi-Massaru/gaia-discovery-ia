@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "externalSources": "MOCKED",
+  "interaction": "ACTUAL_NATIVE_INBOX_BROWSER",
+  "results": [
+    {
+      "reportId": "36",
+      "taskId": "381",
+      "action": "ACCEPT",
+      "reviewStatus": "ACCEPTED_FOR_REVIEW",
+      "sessionId": "350",
+      "reviewer": "GaiaE2EReviewer"
+    },
+    {
+      "reportId": "45",
+      "taskId": "473",
+      "action": "REJECT",
+      "reviewStatus": "REJECTED",
+      "sessionId": "435",
+      "reviewer": "GaiaE2EReviewer"
+    }
+  ]
+}
