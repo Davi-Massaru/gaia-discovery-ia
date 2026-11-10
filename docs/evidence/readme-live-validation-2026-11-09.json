@@ -1,0 +1,611 @@
+{
+  "agent": {
+    "class": "Gaia.AI.DiscoveryAgent",
+    "model": "gpt-4.1-mini",
+    "maxIterations": 1
+  },
+  "sourceSHA256": {
+    "backend/app.py": "6e5a63bcb27473b112eb0a9854415ac811be92bd72195882ea5bd9cc4d8d956c",
+    "backend/gaia/runtime.py": "63b7005d4943acb45ff469470fed1a0a4c2a512912479837de7247e4a7096764",
+    "backend/gaia/science.py": "892b1f0d8538b55e229d50594d0c6047eaafce52c94be6a059925c7febf562c0",
+    "java-pex/src/main/java/com/gaia/discovery/pex/TapOutboundAdapter.java": "3ca35337f445b84daef60278e11d8762d7f76e68835f0777ec6b91ca1f1080ad",
+    "java-pex/build/gaia-tap-pex.jar": "37c3687dbbb3c65a2d94280623bca880201ae71db61eb9b315a2848f1ad703c7",
+    "src/iris/Gaia/AI/DiscoveryAgent.cls": "905611761cd46479c0aeacc4e257048d16fb2e731468cc771220b24e7e29e1a2",
+    "src/iris/Gaia/Interop/Operations/AIHubOperation.cls": "68f9d9f9643da4adcc13c993b0ac511c26dee15d81341d423ded57ca39800044"
+  },
+  "capturedAtUTC": "2026-11-09T22:44:20.674073-03:00",
+  "scope": "BROWSER_HTTP_REAL_PRODUCTION_NATIVE_PERSISTENCE_AND_TRACE",
+  "mocks": false,
+  "runtime": "IRIS for UNIX (Ubuntu Server LTS for x86-64 Containers) 2026.3.0AI (Build 154U) Thu Sep 24 2026 10:04:49 EDT",
+  "production": {
+    "DiscoveryService": "Gaia.Interop.DiscoveryService",
+    "DiscoveryWorkflow": "Gaia.Interop.DiscoveryWorkflow",
+    "FinkOperation": "Gaia.Interop.Operations.FinkOperation",
+    "AIHubOperation": "Gaia.Interop.Operations.AIHubOperation",
+    "GaiaOperation": "Gaia.Interop.Operations.GaiaOperation",
+    "SimbadOperation": "Gaia.Interop.Operations.SimbadOperation",
+    "IrsaOperation": "Gaia.Interop.Operations.IrsaOperation",
+    "AstronomyReviewer": "EnsLib.Workflow.Operation"
+  },
+  "reports": [
+    {
+      "report": {
+        "runId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+        "diaObjectId": "171141185858437172",
+        "diaSourceId": "171189570861269003",
+        "tag": "in_tns",
+        "createdAt": "2026-11-09T22:28:22.342222-03:00",
+        "interopSessionId": "210",
+        "dec": -12.5452468331,
+        "observedMjdTai": 61354.0408914912,
+        "assessment": "REVIEW_CANDIDATE",
+        "summary": "SIMBAD confirms a Seyfert 2 AGN galaxy very close to the transient position. Gaia shows a star nearby but positional and epoch uncertainties prevent definitive association, and IRSA shows an IR source consistent with the galaxy, supporting dust/AGN activity. The evidence coherently supports the AGN interpretation. No remaining catalogs or decisions to refine the classification exist, so finalizing assessment is appropriate.",
+        "reviewStatus": "PENDING",
+        "id": "12",
+        "ra": 339.1937257378,
+        "evidence": {
+          "observation": {
+            "diaObjectId": "171141185858437172",
+            "diaSourceId": "171189570861269003",
+            "raDeg": 339.1937257378,
+            "decDeg": -12.5452468331,
+            "observedMjdTai": 61354.0408914912,
+            "psfFlux": 587145.4,
+            "psfFluxErr": 1644.6996
+          },
+          "finkImages": {
+            "science": "34",
+            "template": "35",
+            "difference": "36"
+          },
+          "actionsDone": [
+            "SIMBAD",
+            "GAIA",
+            "IRSA"
+          ],
+          "catalogs": {
+            "GAIA": {
+              "source": "GAIA",
+              "status": "OK",
+              "timestamp": "2026-11-09T22:27:56.122283-03:00",
+              "sanitized_endpoint": "https://gea.esac.esa.int/tap-server/tap/sync",
+              "sanitized_query": "SELECT TOP 20 source_id,ra,dec,parallax,pmra,pmdec,phot_g_mean_mag,ruwe FROM gaiadr3.gaia_source WHERE 1=CONTAINS(POINT('ICRS',ra,dec),CIRCLE('ICRS',339.1937257378,-12.5452468331,0.001388888889))",
+              "radiusArcsec": 5,
+              "matches": [
+                {
+                  "source_id": "2601454789175321600",
+                  "ra": 339.1937395335528,
+                  "dec": -12.545245458802686,
+                  "parallax": 0.2711364548723274,
+                  "pmra": -0.6345306893758444,
+                  "pmdec": 0.2117534683636742,
+                  "phot_g_mean_mag": 16.632563,
+                  "ruwe": 1.0874795,
+                  "id": "2601454789175321600",
+                  "separationArcsec": 0.04873075478053483,
+                  "associationCaution": "Position-only proximity is not identity; epochs and positional uncertainties differ.",
+                  "epoch": 2016.0,
+                  "properMotionCaution": "Gaia DR3 epoch 2016.0; pmra includes cos(dec). No uncertainty-aware epoch propagation was applied."
+                }
+              ],
+              "transport": {
+                "httpStatus": 200,
+                "elapsedMs": 1012,
+                "endpoint": "https://gea.esac.esa.int/tap-server/tap/sync",
+                "attempts": [
+                  {
+                    "httpStatus": 200,
+                    "elapsedMs": 1012,
+                    "method": "GET",
+                    "endpoint": "https://gea.esac.esa.int/tap-server/tap/sync"
+                  }
+                ]
+              }
+            },
+            "SIMBAD": {
+              "source": "SIMBAD",
+              "status": "OK",
+              "timestamp": "2026-11-09T22:27:53.09242-03:00",
+              "sanitized_endpoint": "https://simbad.cfa.harvard.edu/simbad/sim-tap/sync",
+              "sanitized_query": "SELECT TOP 20 main_id,ra,dec,otype FROM basic WHERE 1=CONTAINS(POINT('ICRS',ra,dec),CIRCLE('ICRS',339.1937257378,-12.5452468331,0.001388888889))",
+              "radiusArcsec": 5,
+              "matches": [
+                {
+                  "main_id": "MCG-02-57-023",
+                  "ra": 339.19374242267,
+                  "dec": -12.54524639993,
+                  "otype": "Sy2",
+                  "id": "MCG-02-57-023",
+                  "separationArcsec": 0.05865218833455013,
+                  "associationCaution": "Position-only proximity is not identity; epochs and positional uncertainties differ."
+                },
+                {
+                  "main_id": "NVSS J223646-123243",
+                  "ra": 339.1947,
+                  "dec": -12.544360000000001,
+                  "otype": "Rad",
+                  "id": "NVSS J223646-123243",
+                  "separationArcsec": 4.681218118908223,
+                  "associationCaution": "Position-only proximity is not identity; epochs and positional uncertainties differ."
+                }
+              ],
+              "transport": {
+                "httpStatus": 200,
+                "elapsedMs": 5688,
+                "endpoint": "https://simbad.cfa.harvard.edu/simbad/sim-tap/sync",
+                "attempts": [
+                  {
+                    "httpStatus": 0,
+                    "elapsedMs": 5043,
+                    "errorType": "SocketTimeoutException",
+                    "errorCode": "TAP_TIMEOUT",
+                    "failurePhase": "CONNECT_TLS",
+                    "method": "POST",
+                    "endpoint": "https://simbad.cds.unistra.fr/simbad/sim-tap/sync"
+                  },
+                  {
+                    "httpStatus": 200,
+                    "elapsedMs": 643,
+                    "method": "POST",
+                    "endpoint": "https://simbad.cfa.harvard.edu/simbad/sim-tap/sync"
+                  }
+                ]
+              }
+            },
+            "IRSA": {
+              "source": "IRSA",
+              "status": "OK",
+              "timestamp": "2026-11-09T22:28:20.582824-03:00",
+              "sanitized_endpoint": "https://irsa.ipac.caltech.edu/TAP/sync",
+              "sanitized_query": "SELECT TOP 20 designation,ra,dec,w1mpro,w2mpro,ph_qual FROM allwise_p3as_psd WHERE 1=CONTAINS(POINT('ICRS',ra,dec),CIRCLE('ICRS',339.1937257378,-12.5452468331,0.002777777778))",
+              "radiusArcsec": 10,
+              "matches": [
+                {
+                  "designation": "J223646.49-123242.8",
+                  "ra": 339.1937208,
+                  "dec": -12.5452231,
+                  "w1mpro": 10.426,
+                  "w2mpro": 9.78,
+                  "ph_qual": "AAAA",
+                  "id": "J223646.49-123242.8",
+                  "separationArcsec": 0.08718331616424221,
+                  "associationCaution": "Position-only proximity is not identity; epochs and positional uncertainties differ.",
+                  "blendingCaution": "AllWISE has a broader PSF; blending and epoch differences limit association."
+                }
+              ],
+              "transport": {
+                "httpStatus": 200,
+                "elapsedMs": 22663,
+                "endpoint": "https://irsa.ipac.caltech.edu/TAP/sync",
+                "attempts": [
+                  {
+                    "httpStatus": 200,
+                    "elapsedMs": 22663,
+                    "method": "POST",
+                    "endpoint": "https://irsa.ipac.caltech.edu/TAP/sync"
+                  }
+                ]
+              }
+            }
+          },
+          "decisionHistory": [
+            {
+              "hypothesis": "The transient corresponds to an extragalactic active galactic nucleus (AGN) such as a Seyfert 2 galaxy near the reported coordinates.",
+              "alternative": "The transient is a galactic star unrelated to any nearby galaxy and its variability is caused by stellar activity or other phenomena.",
+              "next_action": "CHECK_SIMBAD",
+              "question": "Is there a confirmed extragalactic object such as a Seyfert galaxy or AGN at or very near the transient coordinates in the SIMBAD database?",
+              "reason": "The Gaia catalog can show stars but their positional uncertainties or proper motions may not conclusively associate them with the transient. An extragalactic identification like a Seyfert galaxy fits the transient nature better, but we need to verify whether SIMBAD confirms this galaxy or any other known extragalactic object at these coordinates to support the AGN hypothesis before using infrared data.",
+              "assessment": null,
+              "timestamp": "2026-11-09T22:27:47.395016-03:00"
+            },
+            {
+              "hypothesis": "The transient is associated with the Seyfert 2 galaxy MCG-02-57-023 near the given coordinates, suggesting an AGN-related variability.",
+              "alternative": "The transient is unrelated to MCG-02-57-023 and is instead a galactic source with stellar variability or another nature.",
+              "next_action": "CHECK_GAIA",
+              "question": "Is there a relevant Gaia source near the transient position that clarifies whether the transient is a star with proper motion or parallax inconsistent with the galaxy?",
+              "reason": "SIMBAD shows a Seyfert 2 galaxy very close to the transient position but this does not rule out a star or stellar object due to positional uncertainties and proper motions. Gaia data can provide precise astrometry, parallax, and motion information to distinguish a galactic star from a distant extragalactic object. This will help confirm or refute the galaxy association and support accurate classification before considering infrared evidence.",
+              "assessment": null,
+              "timestamp": "2026-11-09T22:27:55.096793-03:00"
+            },
+            {
+              "hypothesis": "The transient is an extragalactic source associated with the Seyfert 2 galaxy MCG-02-57-023, exhibiting variability related to AGN activity.",
+              "alternative": "The transient is a galactic star near the line of sight, unrelated to the Seyfert 2 galaxy, showing intrinsic stellar variability.",
+              "next_action": "CHECK_IRSA",
+              "question": "Is there an IR counterpart in the IRSA AllWISE catalog at the transient coordinates supporting AGN activity or dusty environment consistent with the Seyfert 2 galaxy?",
+              "reason": "SIMBAD identifies a Seyfert 2 galaxy near the transient position, and Gaia shows a stellar source but cannot conclusively associate it due to epoch and positional uncertainties. Infrared data from IRSA AllWISE can confirm the presence of warm dust or AGN-related emission consistent with an extragalactic active nucleus, which would support the galaxy association hypothesis.",
+              "assessment": null,
+              "timestamp": "2026-11-09T22:27:57.910101-03:00"
+            },
+            {
+              "hypothesis": "The transient is an extragalactic source associated with the Seyfert 2 galaxy MCG-02-57-023, showing variability due to AGN activity.",
+              "alternative": "The transient is a galactic star unrelated to the Seyfert 2 galaxy, showing stellar variability.",
+              "next_action": "FINISH",
+              "question": "",
+              "reason": "SIMBAD confirms a Seyfert 2 AGN galaxy very close to the transient position. Gaia shows a star nearby but positional and epoch uncertainties prevent definitive association, and IRSA shows an IR source consistent with the galaxy, supporting dust/AGN activity. The evidence coherently supports the AGN interpretation. No remaining catalogs or decisions to refine the classification exist, so finalizing assessment is appropriate.",
+              "assessment": "REVIEW_CANDIDATE",
+              "timestamp": "2026-11-09T22:28:22.335238-03:00"
+            }
+          ],
+          "historicalAnalogies": [
+            {
+              "id": "9",
+              "summary": "The Gaia catalog shows a star near the transient position but with uncertain association due to astrometric differences and epoch. SIMBAD identifies a Seyfert 2 galaxy very close to this position, which fits the transient nature better than a single star. IRSA shows an IR source consistent with the galaxy's position, indicating dust or AGN activity. Given the available evidence, the transient aligns best with the extragalactic AGN hypothesis rather than a stellar one. No further catalog queries remain, so concluding with a review assessment is appropriate.",
+              "similarity": 0.36390283703804016,
+              "caution": "Semantic analogy, not an astronomical crossmatch."
+            }
+          ],
+          "next_action": "FINISH",
+          "executionStatus": "OK",
+          "provenance": [
+            {
+              "source": "FINK",
+              "endpoint": "https://api.lsst.fink-portal.org/api/v1/sources",
+              "timestamp": "2026-11-09T22:27:40.338508-03:00",
+              "diaObjectId": "171141185858437172"
+            },
+            {
+              "source": "FINK",
+              "endpoint": "https://api.lsst.fink-portal.org/api/v1/cutouts",
+              "timestamp": "2026-11-09T22:27:42.47179-03:00",
+              "kind": "science",
+              "diaSourceId": "171189570861269003"
+            },
+            {
+              "source": "FINK",
+              "endpoint": "https://api.lsst.fink-portal.org/api/v1/cutouts",
+              "timestamp": "2026-11-09T22:27:43.512067-03:00",
+              "kind": "template",
+              "diaSourceId": "171189570861269003"
+            },
+            {
+              "source": "FINK",
+              "endpoint": "https://api.lsst.fink-portal.org/api/v1/cutouts",
+              "timestamp": "2026-11-09T22:27:44.517012-03:00",
+              "kind": "difference",
+              "diaSourceId": "171189570861269003"
+            }
+          ],
+          "historyStatus": "OK",
+          "scientificEvidence": {
+            "supporting": [
+              {
+                "source": "SIMBAD",
+                "fact": "Published positional context is available.",
+                "matches": 2
+              },
+              {
+                "source": "GAIA",
+                "fact": "Published positional context is available.",
+                "matches": 1
+              },
+              {
+                "source": "IRSA",
+                "fact": "Published positional context is available.",
+                "matches": 1
+              }
+            ],
+            "conflicting": [],
+            "uncertain": [
+              {
+                "source": "SIMBAD",
+                "fact": "Candidate proximity does not establish identity; account for epochs, uncertainties and blending."
+              },
+              {
+                "source": "GAIA",
+                "fact": "Candidate proximity does not establish identity; account for epochs, uncertainties and blending."
+              },
+              {
+                "source": "IRSA",
+                "fact": "Candidate proximity does not establish identity; account for epochs, uncertainties and blending."
+              }
+            ]
+          },
+          "evidenceTimeline": [
+            {
+              "source": "SIMBAD",
+              "status": "OK",
+              "timestamp": "2026-11-09T22:27:53.09242-03:00",
+              "interpretation": "Uncertain association: position alone does not establish identity.",
+              "matches": 2
+            },
+            {
+              "source": "GAIA",
+              "status": "OK",
+              "timestamp": "2026-11-09T22:27:56.122283-03:00",
+              "interpretation": "Uncertain association: position alone does not establish identity.",
+              "matches": 1
+            },
+            {
+              "source": "IRSA",
+              "status": "OK",
+              "timestamp": "2026-11-09T22:28:20.582824-03:00",
+              "interpretation": "Uncertain association: position alone does not establish identity.",
+              "matches": 1
+            }
+          ],
+          "assessment": "REVIEW_CANDIDATE",
+          "summary": "SIMBAD confirms a Seyfert 2 AGN galaxy very close to the transient position. Gaia shows a star nearby but positional and epoch uncertainties prevent definitive association, and IRSA shows an IR source consistent with the galaxy, supporting dust/AGN activity. The evidence coherently supports the AGN interpretation. No remaining catalogs or decisions to refine the classification exist, so finalizing assessment is appropriate.",
+          "interopSessionId": "210",
+          "embeddingStatus": "OK"
+        },
+        "images": {
+          "science": true,
+          "template": true,
+          "difference": true
+        }
+      },
+      "run": {
+        "runId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+        "tag": "in_tns",
+        "count": 1,
+        "status": "COMPLETED",
+        "completed": 1,
+        "reportIds": [
+          "12"
+        ],
+        "createdAt": "2026-11-09T22:27:38.591363-03:00",
+        "createdEpoch": 1794274058.5913775,
+        "total": 1
+      },
+      "nativeImages": {
+        "science": {
+          "bytes": 2526,
+          "sha256": "0d9e4a972f7d5c13d1549735e1d97fa194d45f7932110c6be04fe102b3a45341"
+        },
+        "template": {
+          "bytes": 1970,
+          "sha256": "0465004ab10f7c0b8a52ebcf7210f2293fb66ccb38fd954bb2e200c459b621f5"
+        },
+        "difference": {
+          "bytes": 3671,
+          "sha256": "93aa465065892ef474a2129f376640338ba7f80545f4378370e390b80ca91692"
+        }
+      },
+      "trace": [
+        {
+          "id": "210",
+          "source": "DiscoveryService",
+          "target": "DiscoveryWorkflow",
+          "bodyClass": "Gaia.Interop.Messages.DiscoveryRequest",
+          "bodyId": "189",
+          "kind": "START_RUN",
+          "runId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+          "correlationId": "5f1e9628-036d-442d-bc26-5da90b7bce70"
+        },
+        {
+          "id": "211",
+          "source": "DiscoveryWorkflow",
+          "target": "FinkOperation",
+          "bodyClass": "Gaia.Interop.Messages.DiscoveryRequest",
+          "bodyId": "190",
+          "kind": "LIST_BY_TAG",
+          "runId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+          "correlationId": "5f1e9628-036d-442d-bc26-5da90b7bce70"
+        },
+        {
+          "id": "212",
+          "source": "FinkOperation",
+          "target": "DiscoveryWorkflow",
+          "bodyClass": "Gaia.Interop.Messages.DiscoveryResponse",
+          "bodyId": "192",
+          "kind": "LIST_BY_TAG",
+          "runId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+          "correlationId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+          "status": "OK",
+          "errorCode": ""
+        },
+        {
+          "id": "213",
+          "source": "DiscoveryWorkflow",
+          "target": "FinkOperation",
+          "bodyClass": "Gaia.Interop.Messages.DiscoveryRequest",
+          "bodyId": "193",
+          "kind": "GET_SOURCES",
+          "runId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+          "correlationId": "5f1e9628-036d-442d-bc26-5da90b7bce70"
+        },
+        {
+          "id": "214",
+          "source": "FinkOperation",
+          "target": "DiscoveryWorkflow",
+          "bodyClass": "Gaia.Interop.Messages.DiscoveryResponse",
+          "bodyId": "194",
+          "kind": "GET_SOURCES",
+          "runId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+          "correlationId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+          "status": "OK",
+          "errorCode": ""
+        },
+        {
+          "id": "215",
+          "source": "DiscoveryWorkflow",
+          "target": "AIHubOperation",
+          "bodyClass": "Gaia.Interop.Messages.DiscoveryRequest",
+          "bodyId": "195",
+          "kind": "AGENT_DECIDE",
+          "runId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+          "correlationId": "5f1e9628-036d-442d-bc26-5da90b7bce70"
+        },
+        {
+          "id": "216",
+          "source": "AIHubOperation",
+          "target": "DiscoveryWorkflow",
+          "bodyClass": "Gaia.Interop.Messages.DiscoveryResponse",
+          "bodyId": "196",
+          "kind": "AGENT_DECIDE",
+          "runId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+          "correlationId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+          "status": "OK",
+          "errorCode": ""
+        },
+        {
+          "id": "217",
+          "source": "DiscoveryWorkflow",
+          "target": "SimbadOperation",
+          "bodyClass": "Gaia.Interop.Messages.DiscoveryRequest",
+          "bodyId": "197",
+          "kind": "CATALOG_QUERY",
+          "runId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+          "correlationId": "5f1e9628-036d-442d-bc26-5da90b7bce70"
+        },
+        {
+          "id": "218",
+          "source": "SimbadOperation",
+          "target": "DiscoveryWorkflow",
+          "bodyClass": "Gaia.Interop.Messages.DiscoveryResponse",
+          "bodyId": "198",
+          "kind": "CATALOG_QUERY",
+          "runId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+          "correlationId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+          "status": "OK",
+          "errorCode": ""
+        },
+        {
+          "id": "219",
+          "source": "DiscoveryWorkflow",
+          "target": "AIHubOperation",
+          "bodyClass": "Gaia.Interop.Messages.DiscoveryRequest",
+          "bodyId": "199",
+          "kind": "AGENT_DECIDE",
+          "runId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+          "correlationId": "5f1e9628-036d-442d-bc26-5da90b7bce70"
+        },
+        {
+          "id": "220",
+          "source": "AIHubOperation",
+          "target": "DiscoveryWorkflow",
+          "bodyClass": "Gaia.Interop.Messages.DiscoveryResponse",
+          "bodyId": "200",
+          "kind": "AGENT_DECIDE",
+          "runId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+          "correlationId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+          "status": "OK",
+          "errorCode": ""
+        },
+        {
+          "id": "221",
+          "source": "DiscoveryWorkflow",
+          "target": "GaiaOperation",
+          "bodyClass": "Gaia.Interop.Messages.DiscoveryRequest",
+          "bodyId": "201",
+          "kind": "CATALOG_QUERY",
+          "runId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+          "correlationId": "5f1e9628-036d-442d-bc26-5da90b7bce70"
+        },
+        {
+          "id": "222",
+          "source": "GaiaOperation",
+          "target": "DiscoveryWorkflow",
+          "bodyClass": "Gaia.Interop.Messages.DiscoveryResponse",
+          "bodyId": "202",
+          "kind": "CATALOG_QUERY",
+          "runId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+          "correlationId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+          "status": "OK",
+          "errorCode": ""
+        },
+        {
+          "id": "223",
+          "source": "DiscoveryWorkflow",
+          "target": "AIHubOperation",
+          "bodyClass": "Gaia.Interop.Messages.DiscoveryRequest",
+          "bodyId": "203",
+          "kind": "AGENT_DECIDE",
+          "runId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+          "correlationId": "5f1e9628-036d-442d-bc26-5da90b7bce70"
+        },
+        {
+          "id": "224",
+          "source": "AIHubOperation",
+          "target": "DiscoveryWorkflow",
+          "bodyClass": "Gaia.Interop.Messages.DiscoveryResponse",
+          "bodyId": "204",
+          "kind": "AGENT_DECIDE",
+          "runId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+          "correlationId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+          "status": "OK",
+          "errorCode": ""
+        },
+        {
+          "id": "225",
+          "source": "DiscoveryWorkflow",
+          "target": "IrsaOperation",
+          "bodyClass": "Gaia.Interop.Messages.DiscoveryRequest",
+          "bodyId": "205",
+          "kind": "CATALOG_QUERY",
+          "runId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+          "correlationId": "5f1e9628-036d-442d-bc26-5da90b7bce70"
+        },
+        {
+          "id": "226",
+          "source": "IrsaOperation",
+          "target": "DiscoveryWorkflow",
+          "bodyClass": "Gaia.Interop.Messages.DiscoveryResponse",
+          "bodyId": "206",
+          "kind": "CATALOG_QUERY",
+          "runId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+          "correlationId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+          "status": "OK",
+          "errorCode": ""
+        },
+        {
+          "id": "227",
+          "source": "DiscoveryWorkflow",
+          "target": "AIHubOperation",
+          "bodyClass": "Gaia.Interop.Messages.DiscoveryRequest",
+          "bodyId": "207",
+          "kind": "AGENT_DECIDE",
+          "runId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+          "correlationId": "5f1e9628-036d-442d-bc26-5da90b7bce70"
+        },
+        {
+          "id": "228",
+          "source": "AIHubOperation",
+          "target": "DiscoveryWorkflow",
+          "bodyClass": "Gaia.Interop.Messages.DiscoveryResponse",
+          "bodyId": "208",
+          "kind": "AGENT_DECIDE",
+          "runId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+          "correlationId": "5f1e9628-036d-442d-bc26-5da90b7bce70",
+          "status": "OK",
+          "errorCode": ""
+        },
+        {
+          "id": "229",
+          "source": "DiscoveryWorkflow",
+          "target": "AstronomyReviewer",
+          "bodyClass": "EnsLib.Workflow.TaskRequest",
+          "bodyId": "209"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "sha256": "064491b6db58893cf751a7b1416d42f0918a6d46cf75926435258d207a42a78c",
+      "path": "docs/screenshots/discovery-feed-live-success.jpg"
+    },
+    {
+      "sha256": "4f5ac27d250e7f335c312b1da9a73acb04f04c4ed0b274d17db458f47521f84a",
+      "path": "docs/screenshots/investigation-live-success.jpg"
+    },
+    {
+      "sha256": "c34281ff94fd6bce8a4a814cfdec61854c583a680fb7f661076dde07a5f2455d",
+      "path": "docs/screenshots/investigation-live-decisions.jpg"
+    },
+    {
+      "capturedAtUTC": "2026-11-10T02:06:21.2624654Z",
+      "sha256": "cedb9eeed608cabb772ffecb8c6a654215f747354d227ad71e5d7437cb69964e",
+      "messageCount": 20,
+      "path": "docs/screenshots/iris-visual-trace-live-success.jpg",
+      "view": "Authenticated IRIS Management Portal printable Visual Trace",
+      "sessionId": "210"
+    }
+  ],
+  "verification": {
+    "testIsolation": "temporary Docker container; read-only checkout; network disabled",
+    "unitTestCommand": "python3 -B -m unittest discover -s tests -v",
+    "unitTestsPassed": 31,
+    "sourceHashChecks": 6
+  }
+}
